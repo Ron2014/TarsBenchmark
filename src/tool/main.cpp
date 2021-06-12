@@ -68,9 +68,9 @@ int initialize(int argc, char *argv[])
 
         // 获取压测核数
         g_run_cores = std::max(LICODE_GETINT("-n", getProcNum()), (int64_t)1);
-
-        // EndPoint初始化
         TC_Endpoint::EType netType = LICODE_GETSTR("-T", "tcp") != "udp" ? TC_Endpoint::TCP : TC_Endpoint::UDP;
+
+        // EndPoint初始化：支持同个端口号，不同IP地址（中间用,间隔）
         TC_Endpoint ep("", LICODE_GETINT("-P", 0), LICODE_GETINT("-t", 3000), netType);
         vector<string> vd = TC_Common::sepstr<string>(LICODE_GETSTR("-D", ""), ",");
         for (size_t ii = 0; ii < vd.size() && !vd[ii].empty(); ii++)

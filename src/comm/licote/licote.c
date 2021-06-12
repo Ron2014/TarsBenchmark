@@ -281,9 +281,15 @@ licote_option_init(int argc, char* argv[])
 
 	char* ptr = strrchr(argv[0], '/');
 	if (!ptr){
+		// 不存在/，就表示argv[0]是当前目录下的文件名
+		// 也就是说程序是通过
+		// $ tb xxx xxx xxx 方式运行的
 		g_LicoteC.path = ".";
 		g_LicoteC.name = argv[0];
 	}else{
+		// 存在/，就表示argv[0]是通过路径查找得到的文件名
+		// 也就是说程序是这么执行的
+		// $ xxx/xxx/xxx/tb xxx xxx xxx
 		*ptr++ = '\0';
 		g_LicoteC.path = argv[0];
 		g_LicoteC.name = ptr;
@@ -644,7 +650,7 @@ static int __licote_parse_input(int argc, char** argv)
 	int i = 1;
 	for(i=1; i<argc; i++){
 		struct list_head*	pos = NULL;
-		const char*			opt = argv[i];
+		const char*		opt = argv[i];
 		int match = 0;
 		int nbr = 0;
 		/* 优先进行正则匹配 */
